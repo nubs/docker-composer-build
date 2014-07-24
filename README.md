@@ -47,7 +47,7 @@ A simple one that just installs another package but leaves the rest of the
 process alone could look like this:
 
 ```dockerfile
-FROM nubs/arch-build
+FROM nubs/composer-build
 
 USER root
 
