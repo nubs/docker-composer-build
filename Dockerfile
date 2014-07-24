@@ -6,6 +6,7 @@ RUN pacman --sync --refresh --sysupgrade --ignore filesystem --noconfirm --nopro
 RUN pacman --sync --noconfirm --noprogressbar --quiet php git openssh
 
 ADD basedir.ini /etc/php/conf.d/basedir.ini
+ADD timezone.ini /etc/php/conf.d/timezone.ini
 ADD composer-dependencies.ini /etc/php/conf.d/composer-dependencies.ini
 
 RUN useradd --create-home --comment "Composer Build User" build
