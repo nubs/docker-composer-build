@@ -17,6 +17,9 @@ purpose of building PHP composer packages.  It provides several key features:
 * Composer bin directories are automatically included in `PATH`.  Both a
   relative `vendor/bin` directory, and the global `$COMPOSER_HOME/vendor/bin`
   directory are included in the `PATH`.
+* Timezone set to `UTC` by default to remove the warnings with PHP's date and
+  time functions.  This can be overridden by updating
+  `/etc/php/conf.d/timezone.ini`.
 
 ## Usage
 This library is useful with simple `composer.json`'s from the command line.
