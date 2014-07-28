@@ -26,6 +26,12 @@ RUN mkdir -p $COMPOSER_HOME/vendor/bin
 RUN curl -sS -o $COMPOSER_HOME/cacert.pem http://curl.haxx.se/ca/cacert.pem
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=$COMPOSER_HOME/vendor/bin --filename=composer --cafile=$COMPOSER_HOME/cacert.pem
 
+# Get around a bug with docker registry where the owner is root for the home
+# user.  See https://github.com/docker/docker/issues/5892.
+USER root
+RUN chown -R build /home/build
+USER build
+
 # Setup PATH to prioritize local composer bin and global composer bin ahead of
 # system PATH.
 ENV PATH vendor/bin:$COMPOSER_HOME/vendor/bin:$PATH
