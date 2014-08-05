@@ -14,8 +14,12 @@ ADD timezone.ini /etc/php/conf.d/timezone.ini
 ADD composer-dependencies.ini /etc/php/conf.d/composer-dependencies.ini
 
 # Create a separate user for composer to run as.  Root access shouldn't
-# typically be necessary.
-RUN useradd --create-home --comment "Composer Build User" build
+# typically be necessary.  We specify the uid so that it is unique.
+RUN useradd --uid 55446 --create-home --comment "Composer Build User" build
+
+#Set the umask to 002 so that the group has write access inside and outside the container.
+ADD umask.sh /home/build/umask.sh
+
 USER build
 ENV HOME /home/build
 ENV COMPOSER_HOME $HOME/.composer
@@ -33,4 +37,5 @@ ENV PATH vendor/bin:$COMPOSER_HOME/vendor/bin:$PATH
 VOLUME ["/code"]
 WORKDIR /code
 
+ENTRYPOINT ["/home/build/umask.sh"]
 CMD ["composer", "install"]

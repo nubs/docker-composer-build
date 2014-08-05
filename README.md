@@ -41,6 +41,24 @@ Other commands can also be executed.  For example, to update dependencies:
 docker run -i -t --rm -v /tmp/my-code:/code nubs/composer-build composer update
 ```
 
+## Permissions
+This image uses a build user to run composer.  This means that your file
+permissions must allow this user to write to certain folders like `vendor`.
+The easiest way to do this is to create a group and give that group write
+access to the necessary folders.
+
+```bash
+groupadd --gid 55446 dockerBuild
+chmod -R 775 vendor
+chgrp -R 55446 vendor
+```
+
+You may also want to give your user access to files created by the build user.
+
+```bash
+usermod -a -G 55446 "$(whoami)"
+```
+
 ### Dockerfile build
 Alternatively, you can create your own `Dockerfile` that builds on top of this
 image.  This allows you to modify the environment by installing additional
