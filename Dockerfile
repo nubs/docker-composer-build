@@ -4,7 +4,7 @@ MAINTAINER Spencer Rinehart <anubis@overthemonkey.com>
 
 # Update system and install php + composer dependencies (git and openssh for
 # access to repositories)
-RUN pacman --sync --refresh --sysupgrade --ignore filesystem --noconfirm --noprogressbar --quiet && pacman --sync --noconfirm --noprogressbar --quiet php git openssh
+RUN pacman --sync --refresh --sysupgrade --noconfirm --noprogressbar --quiet && pacman --sync --noconfirm --noprogressbar --quiet php git openssh
 
 # Configure the base system.  basedir restricts builds to only have sane
 # filesystem access.  Timezone is there to silence php's silly warnings.
