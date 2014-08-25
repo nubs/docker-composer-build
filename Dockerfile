@@ -16,7 +16,8 @@ ADD composer-dependencies.ini /etc/php/conf.d/composer-dependencies.ini
 # typically be necessary.  We specify the uid so that it is unique.
 RUN useradd --uid 55446 --create-home --comment "Composer Build User" build
 
-#Set the umask to 002 so that the group has write access inside and outside the container.
+# Set the umask to 002 so that the group has write access inside and outside the
+# container.
 ADD umask.sh /home/build/umask.sh
 
 USER build
