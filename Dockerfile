@@ -22,7 +22,7 @@ ENV COMPOSER_HOME $HOME/.composer
 
 # Set the umask to 002 so that the group has write access inside and outside the
 # container.
-ADD umask.sh /home/build/umask.sh
+ADD umask.sh $HOME/umask.sh
 
 # Setup and install composer into the composer global location.  The
 # certificate is installed manually to get around open_basedir restrictions.
