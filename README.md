@@ -48,9 +48,9 @@ The easiest way to do this is to create a group and give that group write
 access to the necessary folders.
 
 ```bash
-groupadd --gid 55446 dockerBuild
+groupadd --gid 55446 composer-build
 chmod -R 775 vendor
-chgrp -R 55446 vendor
+chgrp -R composer-build vendor
 ```
 
 You may also want to give your user access to files created by the build user.
