@@ -49,7 +49,7 @@ access to the necessary folders.
 
 ```bash
 groupadd --gid 55446 composer-build
-chmod -R 775 vendor
+chmod -R g+w vendor
 chgrp -R composer-build vendor
 ```
 
