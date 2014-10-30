@@ -34,7 +34,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=$COMPOSER_
 # system PATH.
 ENV PATH vendor/bin:$COMPOSER_HOME/vendor/bin:$PATH
 
-VOLUME ["/code"]
 WORKDIR /code
 
 ENTRYPOINT ["/home/build/umask.sh"]
