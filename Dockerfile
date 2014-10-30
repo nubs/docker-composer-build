@@ -1,4 +1,4 @@
-FROM base/archlinux
+FROM base/archlinux:latest
 
 MAINTAINER Spencer Rinehart <anubis@overthemonkey.com>
 
