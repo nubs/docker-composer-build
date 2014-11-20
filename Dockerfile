@@ -16,6 +16,9 @@ ADD composer-dependencies.ini /etc/php/conf.d/composer-dependencies.ini
 # typically be necessary.  We specify the uid so that it is unique.
 RUN useradd --uid 55446 --create-home --comment "Composer Build User" build
 
+RUN mkdir /code && chown build:build /code
+WORKDIR /code
+
 USER build
 ENV HOME /home/build
 ENV COMPOSER_HOME $HOME/.composer
@@ -33,8 +36,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=$COMPOSER_
 # Setup PATH to prioritize local composer bin and global composer bin ahead of
 # system PATH.
 ENV PATH vendor/bin:$COMPOSER_HOME/vendor/bin:$PATH
-
-WORKDIR /code
 
 ENTRYPOINT ["/home/build/umask.sh"]
 CMD ["composer", "install"]
