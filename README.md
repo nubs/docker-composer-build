@@ -87,5 +87,9 @@ docker run -i -t --rm -v "$(pwd):/code" my-code
 docker run -i -t --rm -v "$(pwd):/code" my-code composer update
 ```
 
+## License
+docker-composer-build is licensed under the MIT license.  See
+[LICENSE](LICENSE) for the full license text.
+
 [PHP]: http://php.net/ "PHP: Hypertext Preprocessor"
 [composer]: https://getcomposer.org/
