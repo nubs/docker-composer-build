@@ -37,8 +37,8 @@ ADD umask.sh $HOME/umask.sh
 # Setup and install composer into the composer global location.  The
 # certificate is installed manually to get around open_basedir restrictions.
 RUN mkdir -p $COMPOSER_HOME/vendor/bin
-RUN curl -sS -o $COMPOSER_HOME/cacert.pem http://curl.haxx.se/ca/cacert.pem
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=$COMPOSER_HOME/vendor/bin --filename=composer --cafile=$COMPOSER_HOME/cacert.pem
+RUN curl -sSLo $COMPOSER_HOME/cacert.pem http://curl.haxx.se/ca/cacert.pem
+RUN curl -sSL https://getcomposer.org/installer | php -- --install-dir=$COMPOSER_HOME/vendor/bin --filename=composer --cafile=$COMPOSER_HOME/cacert.pem
 
 # Setup PATH to prioritize local composer bin and global composer bin ahead of
 # system PATH.
