@@ -6,7 +6,12 @@ RUN curl -o /etc/pacman.d/mirrorlist "https://www.archlinux.org/mirrorlist/?coun
 
 # Update system and install php + composer dependencies (git and openssh for
 # access to repositories)
-RUN pacman-key --refresh-keys && pacman --sync --refresh --noconfirm --noprogressbar --quiet && pacman --sync --noconfirm --noprogressbar --quiet archlinux-keyring openssl pacman && pacman-db-upgrade && pacman --sync --sysupgrade --noconfirm --noprogressbar --quiet && pacman --sync --noconfirm --noprogressbar --quiet php git openssh
+RUN pacman-key --refresh-keys && \
+    pacman --sync --refresh --noconfirm --noprogressbar --quiet && \
+    pacman --sync --noconfirm --noprogressbar --quiet archlinux-keyring openssl pacman && \
+    pacman-db-upgrade && \
+    pacman --sync --sysupgrade --noconfirm --noprogressbar --quiet && \
+    pacman --sync --noconfirm --noprogressbar --quiet php git openssh
 
 # Configure the base system.  basedir restricts builds to only have sane
 # filesystem access.  Timezone is there to silence php's silly warnings.
