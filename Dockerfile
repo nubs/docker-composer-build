@@ -15,7 +15,7 @@ RUN pacman-key --refresh-keys && \
 
 # Configure the base system.  basedir restricts builds to only have sane
 # filesystem access.  Timezone is there to silence php's silly warnings.
-COPY basedir.ini timezone.ini composer-dependencies.ini /etc/php/conf.d/
+COPY basedir.ini timezone.ini /etc/php/conf.d/
 
 # Create a separate user for composer to run as.  Root access shouldn't
 # typically be necessary.  We specify the uid so that it is unique.
