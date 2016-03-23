@@ -10,10 +10,6 @@ purpose of building PHP composer packages.  It provides several key features:
   permissions to be built.
 * Access to the build location will be in the volume located at `/code`.  This
   directory will be the default working directory.
-* PHP limited access using `open_basedir`.  By default, access is only granted
-  to `/code`, `/tmp`, and `$COMPOSER_HOME`.  For general builds this should
-  likely be sufficient, but should you need to override the settings you can do
-  so by updating `/etc/php/conf.d/basedir.ini`.
 * Composer bin directories are automatically included in `PATH`.  Both a
   relative `vendor/bin` directory, and the global `$COMPOSER_HOME/vendor/bin`
   directory are included in the `PATH`.
