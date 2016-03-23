@@ -15,9 +15,7 @@ RUN pacman-key --refresh-keys && \
 
 # Configure the base system.  basedir restricts builds to only have sane
 # filesystem access.  Timezone is there to silence php's silly warnings.
-ADD basedir.ini /etc/php/conf.d/basedir.ini
-ADD timezone.ini /etc/php/conf.d/timezone.ini
-ADD composer-dependencies.ini /etc/php/conf.d/composer-dependencies.ini
+COPY basedir.ini timezone.ini composer-dependencies.ini /etc/php/conf.d/
 
 # Create a separate user for composer to run as.  Root access shouldn't
 # typically be necessary.  We specify the uid so that it is unique.
@@ -32,7 +30,7 @@ ENV COMPOSER_HOME $HOME/.composer
 
 # Set the umask to 002 so that the group has write access inside and outside the
 # container.
-ADD umask.sh $HOME/umask.sh
+COPY umask.sh $HOME/
 
 # Setup and install composer into the composer global location.  The
 # certificate is installed manually to get around open_basedir restrictions.
