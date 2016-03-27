@@ -5,9 +5,6 @@ This is a base image for building [PHP][PHP] [composer] packages.
 This docker image builds on top of Arch Linux's base/archlinux image for the
 purpose of building PHP composer packages.  It provides several key features:
 
-* A non-root user (`build`) for executing the image build.  This is important
-  for security purposes and to ensure that the package doesn't require root
-  permissions to be built.
 * Access to the build location will be in the volume located at `/code`.  This
   directory will be the default working directory.
 * Composer bin directories are automatically included in `PATH`.  Both a
@@ -38,21 +35,31 @@ docker run -i -t --rm -v /tmp/my-code:/code nubs/composer-build composer update
 ```
 
 ## Permissions
-This image uses a build user to run composer.  This means that your file
-permissions must allow this user to write to certain folders like `vendor`.
-The easiest way to do this is to create a group and give that group write
-access to the necessary folders.
+This image runs as root (PID 0), but for security purposes it is recommended to
+use Docker's [user namespace functionality][docker-user-namespaces] to map that
+to a non-privileged user on your host system.
+
+If you use volume mounting of your project (e.g., to run `composer install`
+inside the container but want to modify the host `vendor` directory), then you
+may run into permission issues.
+
+Without Docker's user namespaces, the container will create files/directories
+with root ownership on your host which may cause issues when trying to access
+them as a non-root user.
+
+When using Docker's user namespaces, the container will be running under a
+different user.  You may have to adjust permissions on the directory to allow
+the user to create/modify files.  For example, giving an `/etc/setuid` and
+`/etc/subgid` that contains `dockremap:165536:65536` and a docker daemon
+running using this default mapping: `docker daemon --userns-remap=default`,
+you would need to run the following to give the container access to run
+`composer install` and yourself access to do so on the host:
 
 ```bash
-groupadd --gid 55446 composer-build
+groupadd --gid 165536 subgid-root
 chmod -R g+w vendor
-chgrp -R composer-build vendor
-```
-
-You may also want to give your user access to files created by the build user.
-
-```bash
-usermod -a -G 55446 "$(whoami)"
+chgrp -R subgid-root node_modules
+usermod -a -G subgid-root "$(whoami)"
 ```
 
 ### Dockerfile build
@@ -66,11 +73,7 @@ process alone could look like this:
 ```dockerfile
 FROM nubs/composer-build
 
-USER root
-
 RUN pacman --sync --noconfirm --noprogressbar --quiet xdebug
-
-USER build
 ```
 
 You can then build this docker image and run it against your `composer.json`
@@ -89,4 +92,5 @@ the full license text.
 
 [PHP]: http://php.net/ "PHP: Hypertext Preprocessor"
 [composer]: https://getcomposer.org/
+[docker-use-namespaces]: https://docs.docker.com/engine/reference/commandline/daemon/#daemon-user-namespace-options
 [LICENSE]: https://github.com/nubs/docker-composer-build/blob/master/LICENSE

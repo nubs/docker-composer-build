@@ -17,20 +17,11 @@ RUN pacman-key --refresh-keys && \
 # warnings.
 COPY timezone.ini /etc/php/conf.d/
 
-# Create a separate user for composer to run as.  Root access shouldn't
-# typically be necessary.  We specify the uid so that it is unique.
-RUN useradd --uid 55446 --create-home --comment "Composer Build User" build
-
-RUN mkdir /code && chown build:build /code
+RUN mkdir /code
 WORKDIR /code
 
-USER build
-ENV HOME /home/build
+ENV HOME /root
 ENV COMPOSER_HOME $HOME/.composer
-
-# Set the umask to 002 so that the group has write access inside and outside the
-# container.
-COPY umask.sh $HOME/
 
 # Setup and install composer into the composer global location.  The
 # certificate is installed manually to get around open_basedir restrictions.
@@ -42,5 +33,4 @@ RUN curl -sSL https://getcomposer.org/installer | php -- --install-dir=$COMPOSER
 # system PATH.
 ENV PATH vendor/bin:$COMPOSER_HOME/vendor/bin:$PATH
 
-ENTRYPOINT ["/home/build/umask.sh"]
 CMD ["composer", "install"]
