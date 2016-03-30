@@ -70,7 +70,7 @@ process alone could look like this:
 ```dockerfile
 FROM nubs/composer-build
 
-RUN apk add --no-cache xdebug && \
+RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 ```
 
