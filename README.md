@@ -2,7 +2,7 @@
 This is a base image for building [PHP][PHP] [composer] packages.
 
 ## Purpose
-This docker image builds on top of Arch Linux's base/archlinux image for the
+This docker image builds on top of the official PHP 7.0-alpine image with the
 purpose of building PHP composer packages.  It provides several key features:
 
 * Access to the build location will be in the volume located at `/code`.  This
@@ -10,9 +10,6 @@ purpose of building PHP composer packages.  It provides several key features:
 * Composer bin directories are automatically included in `PATH`.  Both a
   relative `vendor/bin` directory, and the global `$COMPOSER_HOME/vendor/bin`
   directory are included in the `PATH`.
-* Timezone set to `UTC` by default to remove the warnings with PHP's date and
-  time functions.  This can be overridden by updating
-  `/etc/php/conf.d/timezone.ini`.
 
 ## Usage
 This library is useful with simple `composer.json`'s from the command line.
@@ -73,7 +70,8 @@ process alone could look like this:
 ```dockerfile
 FROM nubs/composer-build
 
-RUN pacman --sync --noconfirm --noprogressbar --quiet xdebug
+RUN apk add --no-cache xdebug && \
+    docker-php-ext-enable xdebug
 ```
 
 You can then build this docker image and run it against your `composer.json`
